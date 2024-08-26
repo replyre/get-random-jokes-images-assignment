@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Joke and Image</title>
+  </head>
+  <body>
+    <h1>Random Joke and Image</h1>
+    <div>
+      <h2>Joke:</h2>
+      <p id="joke">Loading...</p>
+    </div>
+    <div>
+      <h2>Image:</h2>
+      <img
+        id="randomImage"
+        src=""
+        alt="Random Image"
+        style="max-width: 500px"
+      />
+    </div>
+
+    <button onclick="fetchJokeAndImage()">Get New Joke and Image</button>
+
+    <script>
+      async function fetchJokeAndImage() {
+        try {
+          document.getElementById("joke").innerText = "loading";
+
+          const response = await fetch(
+            "http://localhost:8000/api/jokes-images/random"
+          );
+          const data = await response.json();
+
+          document.getElementById("joke").innerText = data.joke;
+
+          document.getElementById("randomImage").src = data.image;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          document.getElementById("joke").innerText = "Failed to load joke";
+          document.getElementById("randomImage").alt = "Failed to load image";
+        }
+      }
+
+      fetchJokeAndImage();
+    </script>
+  </body>
+</html>
